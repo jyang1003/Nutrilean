@@ -49,13 +49,16 @@ const App = () => {
 	//==================//
 	const getProfile = () => {
 		if (user != null) {
+			console.log('user id: ',user._id)
 			//fetch req to get profile
-			fetch(`localhost:8000/profile/${user._id}`)
+			fetch(`http://localhost:8000/profile/${user._id}`)
 			.then(profile => {
+				console.log('first .then: ',profile)
 				return profile.json()
 			})
 			.then(profile => {
-				setCurrentProfile(profile[0])
+				console.log('second .then: ', profile)
+				setCurrentProfile(profile)
 				return ('Logged in!')
 			})
 			.catch(error => console.log(error))
@@ -66,7 +69,10 @@ const App = () => {
 	//=================//
 	useEffect(() => {
 		getProfile()
+		console.log('this is current profile:', currentProfile)
+		// console.log('this is current user:', user)
 	}, [user])
+
 		return (
 			<Fragment>
 				<Header user={user} />
@@ -82,7 +88,7 @@ const App = () => {
 					/>
 					<Route
 						path='/profile'
-						element={<Profile currentProfile={currentProfile}msgAlert={msgAlert} setUser={setUser} />}
+						element={<Profile currentProfile={currentProfile} msgAlert={msgAlert} setUser={setUser} />}
 					/>
 					<Route
 						path='/my-week'

@@ -9,11 +9,21 @@ const linkStyle = {
 const authenticatedOptions = (
 	<>
 		<Nav.Link>
+			<Link to='profile' style={linkStyle}>
+				Profile
+			</Link>
+		</Nav.Link>
+		<Nav.Link>
 			<Link to='change-password' style={linkStyle}>
 				Change Password
 			</Link>
 		</Nav.Link>
 		<Nav.Link>
+			<Link to='sign-out' style={linkStyle}>
+				Sign Out
+			</Link>
+		</Nav.Link>
+				<Nav.Link>
 			<Link to='sign-out' style={linkStyle}>
 				Sign Out
 			</Link>
