@@ -1,5 +1,5 @@
 // import React, { Component, Fragment } from 'react'
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { v4 as uuid } from 'uuid'
 
@@ -12,10 +12,14 @@ import SignUp from './components/auth/SignUp'
 import SignIn from './components/auth/SignIn'
 import SignOut from './components/auth/SignOut'
 import ChangePassword from './components/auth/ChangePassword'
+import Profile from './components/Profile'
+import DailyNutrition from './components/DailyNutrition'
+import MyWeek from './components/MyWeek'
 
 const App = () => {
 
   const [user, setUser] = useState(null)
+  const [currentProfile, setCurrentProfile] = useState(null)
   const [msgAlerts, setMsgAlerts] = useState([])
 
   console.log('user in app', user)
@@ -40,6 +44,29 @@ const App = () => {
 		})
 	}
 
+	//==================//
+	// GET USER PROFILE //
+	//==================//
+	const getProfile = () => {
+		if (user != null) {
+			//fetch req to get profile
+			fetch(`localhost:8000/profile/${user._id}`)
+			.then(profile => {
+				return profile.json()
+			})
+			.then(profile => {
+				setCurrentProfile(profile[0])
+				return ('Logged in!')
+			})
+			.catch(error => console.log(error))
+		}
+	}
+	//=================//
+	// HOOK UPON LOGIN //
+	//=================//
+	useEffect(() => {
+		getProfile()
+	}, [user])
 		return (
 			<Fragment>
 				<Header user={user} />
@@ -53,6 +80,19 @@ const App = () => {
 						path='/sign-in'
 						element={<SignIn msgAlert={msgAlert} setUser={setUser} />}
 					/>
+					<Route
+						path='/profile'
+						element={<Profile currentProfile={currentProfile}msgAlert={msgAlert} setUser={setUser} />}
+					/>
+					<Route
+						path='/my-week'
+						element={<MyWeek msgAlert={msgAlert} setUser={setUser} />}
+					/>
+					<Route
+						path='/my-day'
+						element={<DailyNutrition msgAlert={msgAlert} setUser={setUser} />}
+					/>
+
           <Route
             path='/sign-out'
             element={
