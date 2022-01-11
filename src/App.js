@@ -15,11 +15,12 @@ import ChangePassword from './components/auth/ChangePassword'
 import Profile from './components/Profile'
 import DailyNutrition from './components/DailyNutrition'
 import MyWeek from './components/MyWeek'
+import NutritionForm from './components/NutritionForm'
 
 const App = () => {
 
   const [user, setUser] = useState(null)
-  const [currentProfile, setCurrentProfile] = useState(null)
+  const [currentProfile, setCurrentProfile] = useState({})
   const [msgAlerts, setMsgAlerts] = useState([])
 
   console.log('user in app', user)
@@ -88,7 +89,7 @@ const App = () => {
 					/>
 					<Route
 						path='/profile'
-						element={<Profile currentProfile={currentProfile} msgAlert={msgAlert} setUser={setUser} />}
+						element={<Profile currentProfile={currentProfile} getProfile={getProfile}user={user}msgAlert={msgAlert} setUser={setUser}/>}
 					/>
 					<Route
 						path='/my-week'
@@ -96,7 +97,7 @@ const App = () => {
 					/>
 					<Route
 						path='/my-day'
-						element={<DailyNutrition msgAlert={msgAlert} setUser={setUser} />}
+						element={<NutritionForm msgAlert={msgAlert} setUser={setUser} />}
 					/>
 
           <Route
