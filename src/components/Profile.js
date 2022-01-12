@@ -9,20 +9,32 @@ function Profile(props) {
         activityLevel:'',
         owner: props.user._id
     })
-
+    let bmr;
+    let goal;
     const formik = useFormik({
         initialValues: {
             name: '',
             age: 0,
             weight: 0,
+            sex: '',
             activityLevel: 0,
+            goal: 0
         },
         onSubmit: () => {
+            if(formik.values.sex === 'male'){
+            bmr = formik.values.activityLevel * (88.362 + (13.397 * props.profile.weight * .4535) + (4.799 * props.profile.height * 2.57) 
+            - (5.677 * props.profile.age)) 
+                
+            } else{
+                bmr = formik.values.activityLevel * (447.6 + (9.25 * props.profile.weight * .4535) + (3.10 * props.profile.height * 2.57)
+                - (4.33 * props.profile.age))
+            }
             let profileInput = {
                 name: formik.values.name,
                 age: formik.values.age,
                 weight: formik.values.weight,
                 activityLevel: formik.values.activityLevel,
+                baseCaloricMaintenence: bmr,
                 owner: props.user._id
             }
             console.log('this is the info',profileInput)
@@ -75,17 +87,17 @@ let goalInfo;
                     <select name='activityLevel' value={formik.values.activityLevel} onChange={formik.handleChange}>
                         <option>--Choose Actity Level--</option>
                         <option value={1.2}>Sedentary</option>
-                        <option value={1.375}>Lightly Active</option>
-                        <option value={1.55}>Moderately Active</option>
-                        <option value={1.725}>Very Active</option>
-                        <option value={1.9}>Extra Active</option>
+                        <option value={1.375}>Lightly active</option>
+                        <option value={1.55}>Moderately active</option>
+                        <option value={1.725}>Very active</option>
+                        <option value={1.9}>Extra active</option>
                     </select>
-                    {/* <select>
+                    <select value={formik.values.goal}>
                         <option>--What's your goal--</option>
-                        <option value={1.2}>Sedentary</option>
-                        <option value={1.375}>Lightly Active</option>
-                        <option value={1.55}>Moderately Active</option>
-                    </select> */}
+                        <option value={1}>Lose weight</option>
+                        <option value={2}>Maintain weight</option>
+                        <option value={3}>Gain weight</option>
+                    </select>
                     <input className='brand-button' type='submit' value='submit' />
 
                 </form>
