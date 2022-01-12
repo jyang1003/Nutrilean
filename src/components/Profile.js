@@ -66,6 +66,12 @@ let goalInfo;
                         <label htmlFor='weight'>Weight</label>
                         <input onChange={formik.handleChange} type='number' name='weight' id='weight' value={formik.values.weight} />
                     </div>
+                    <select name='sex' value={formik.values.sex} onChange={formik.handleChange}>
+                        <option>-Choose Your Sex--</option>
+                        <option value='male'>Male</option>
+                        <option value='female'>Female</option>
+
+                    </select>
                     <select name='activityLevel' value={formik.values.activityLevel} onChange={formik.handleChange}>
                         <option>--Choose Actity Level--</option>
                         <option value={1.2}>Sedentary</option>
