@@ -1,12 +1,16 @@
 /*
 TODO LIST
-2. Get nutrition should be in profile.js
-3. profile.js needs profile creation, work on that after setting up profile page
-4. IF DONE WITH PROFILE PAGE, set up My Day page and Form component
-5. Talk with christina about the quick maffs
+1. create all functions for the nutrition math
+    caloric goals
+    protein goals
+    carbs goals
+    fats goals
 
-Notes:
-* * BABY STEPS FIRST
-* * Profile and home page should be the same thing
-* * 
+2. make function to add up nutrition by date
+3. do the goals - daily intake function
+4. learn/add graph stuff
+5. add edit function based on graph click 
+6. stretch goal allow them to view graph by different week
+
+
 */

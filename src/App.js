@@ -15,7 +15,7 @@ import ChangePassword from './components/auth/ChangePassword'
 import Profile from './components/Profile'
 import DailyNutrition from './components/DailyNutrition'
 import MyWeek from './components/MyWeek'
-import NutritionForm from './components/NutritionForm'
+
 
 const App = () => {
 
@@ -97,7 +97,7 @@ const App = () => {
 					/>
 					<Route
 						path='/my-day'
-						element={<DailyNutrition msgAlert={msgAlert} user={user} profile={currentProfile}/>}
+						element={<DailyNutrition msgAlert={msgAlert} user={user} profile={currentProfile} getProfile={getProfile}/>}
 					/>
 
           <Route
