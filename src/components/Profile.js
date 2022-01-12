@@ -13,9 +13,9 @@ function Profile(props) {
     const formik = useFormik({
         initialValues: {
             name: '',
-            age: '',
-            weight: '',
-            activityLevel: '',
+            age: 0,
+            weight: 0,
+            activityLevel: 0,
         },
         onSubmit: () => {
             let profileInput = {
@@ -60,13 +60,12 @@ let goalInfo;
                     </div>
                     <div>
                         <label htmlFor='age'>Age</label>
-                        <input onChange={formik.handleChange} type='text' name='age' id='age' value={formik.values.age} />
+                        <input onChange={formik.handleChange} type='number' name='age' id='age' value={formik.values.age} />
                     </div>
                     <div>
                         <label htmlFor='weight'>Weight</label>
-                        <input onChange={formik.handleChange} type='text' name='weight' id='weight' value={formik.values.weight} />
+                        <input onChange={formik.handleChange} type='number' name='weight' id='weight' value={formik.values.weight} />
                     </div>
-                    <input className='brand-button' type='submit' value='submit' />
                     <select name='activityLevel' value={formik.values.activityLevel} onChange={formik.handleChange}>
                         <option>--Choose Actity Level--</option>
                         <option value={1.2}>Sedentary</option>
@@ -81,6 +80,8 @@ let goalInfo;
                         <option value={1.375}>Lightly Active</option>
                         <option value={1.55}>Moderately Active</option>
                     </select> */}
+                    <input className='brand-button' type='submit' value='submit' />
+
                 </form>
             )
         } else{

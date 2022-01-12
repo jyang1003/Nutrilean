@@ -97,7 +97,7 @@ const App = () => {
 					/>
 					<Route
 						path='/my-day'
-						element={<NutritionForm msgAlert={msgAlert} setUser={setUser} />}
+						element={<DailyNutrition msgAlert={msgAlert} user={user} profile={currentProfile}/>}
 					/>
 
           <Route
