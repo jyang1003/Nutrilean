@@ -28,4 +28,26 @@ bmrWomen = 447.6 + (9.25 x weight * .4535) + (3.10 x height * 2.57) – (4.33 x 
 
 
 
+if goal is lose weight
+caloric maintenance - 500
+macros need research
+
+FOR CUT
+protein: 1.1-1.4 grams per bodyweight * 4 = calories
+
+fats: 15-25% bmr/9 = grams
+
+carbs: fill in the rest/4 = grams
+
+GAINING
+protein: 0.8-1.0 grams per pound * 4 = calories
+
+fats: 20-30% of calories/9 = grams
+
+carbs: fill in the rest/4 = grams
+
+MAINTAIN
+protein 25%
+fats 25%
+carbs 50%
 */

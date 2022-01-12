@@ -10,7 +10,10 @@ function Profile(props) {
         owner: props.user._id
     })
     let bmr;
-    let goal;
+    let calGoal;
+    let carbGoal;
+    let proGoal;
+    let fatGoal;
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -24,17 +27,54 @@ function Profile(props) {
             if(formik.values.sex === 'male'){
             bmr = formik.values.activityLevel * (88.362 + (13.397 * props.profile.weight * .4535) + (4.799 * props.profile.height * 2.57) 
             - (5.677 * props.profile.age)) 
-                
+                if (formik.values.goal === 1){
+                    calGoal = Math.round(bmr - 400)
+                    proGoal = formik.values.weight * 1.3
+                    fatGoal = (.20 * bmr)/9
+                    carbGoal = (calGoal - (proGoal * 4) + (fatGoal * 9))/4
+                }
+                else if (formik.values.goal === 2){
+                    calGoal = Math.round(bmr)
+                    proGoal = formik.values.weight * 1.1
+                    fatGoal = (.25 * bmr)/9
+                    carbGoal = (calGoal - (proGoal * 4) + (fatGoal * 9))/4
+                    
+                }
+                else {
+                    calGoal = Math.round(bmr + 500)
+                    proGoal = formik.values.weight * .9
+                    fatGoal = (.25 * bmr)/9
+                    carbGoal = (calGoal - (proGoal * 4) + (fatGoal * 9))/4
+                }
             } else{
                 bmr = formik.values.activityLevel * (447.6 + (9.25 * props.profile.weight * .4535) + (3.10 * props.profile.height * 2.57)
                 - (4.33 * props.profile.age))
+                if (formik.values.goal === 1){
+                    calGoal = Math.round(bmr - 400)
+                    proGoal = formik.values.weight * 1.3
+                    fatGoal = (.20 * bmr)/9
+                    carbGoal = (calGoal - (proGoal * 4) + (fatGoal * 9))/4
+                }
+                else if (formik.values.goal === 2){
+                    calGoal = Math.round(bmr)
+                    proGoal = formik.values.weight * 1.1
+                    fatGoal = (.25 * bmr)/9
+                    carbGoal = (calGoal - (proGoal * 4) + (fatGoal * 9))/4
+                    
+                }
+                else {
+                    calGoal = Math.round(bmr + 500)
+                    proGoal = formik.values.weight * .9
+                    fatGoal = (.25 * bmr)/9
+                    carbGoal = (calGoal - (proGoal * 4) + (fatGoal * 9))/4
+                }
             }
             let profileInput = {
                 name: formik.values.name,
                 age: formik.values.age,
                 weight: formik.values.weight,
                 activityLevel: formik.values.activityLevel,
-                baseCaloricMaintenence: bmr,
+                baseCaloricMaintenence: Math.round(bmr),
                 owner: props.user._id
             }
             console.log('this is the info',profileInput)
