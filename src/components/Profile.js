@@ -1,65 +1,73 @@
 import React, { useState, useEffect } from 'react';
+import { useFormik } from 'formik'
 
 function Profile(props) {   
-const [newProfile, setNewProfile] = useState({
-    name:'',
-    age:'',
-    weight:'',
-    activityLevel:'',
-    owner: props.user._id
-})
-//handle submit
-    const handleChange = (e) => {
-        setNewProfile({...newProfile, [e.target.name]: e.target.value}) 
-    }
-    const handleSubmit = (e) =>{
-        e.preventDefault()
-        //take the info
-        let preJSONBody = {
-            name: newProfile.name,
-            age: newProfile.age,
-            weight: newProfile.weight,
-            activityLevel: newProfile.activityLevel,
-            owner: props.user._id
-        }
-        //post to database
-        fetch(`http://localhost8000/profiles`, {
-            method: 'POST',
-            body: JSON.stringify(preJSONBody),
-            headers: { 'Content-Type': 'application/JSON'}
-        })
-        .then(response => response.json())
-        .then(() => {
-            setNewProfile({
-                name:'',
-                age:'',
-                weight:'',
-                activityLevel:'',
+    const [newProfile, setNewProfile] = useState({
+        name:'',
+        age:'',
+        weight:'',
+        activityLevel:'',
+        owner: props.user._id
+    })
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            age: '',
+            weight: '',
+            activityLevel: '',
+        },
+        onSubmit: () => {
+            let profileInput = {
+                name: formik.values.name,
+                age: formik.values.age,
+                weight: formik.values.weight,
+                activityLevel: formik.values.activityLevel,
                 owner: props.user._id
+            }
+            console.log('this is the info',profileInput)
+            fetch(`http://localhost:8000/profiles`, {
+                method: 'POST',
+                body: JSON.stringify(profileInput),
+                headers: { 'Content-Type': 'application/JSON'}
             })
-            props.getProfile()
-        })
-        .catch(error => {console.log(error)})
-    }
+            .then((response) => {
+                console.log('this is response.json', response)
+            })
+            .then(() => {
+                setNewProfile({
+                    name:'',
+                    age:'',
+                    weight:'',
+                    activityLevel:'',
+                    owner: props.user._id
+                })
+                props.getProfile()
+            })
+            .catch(error => {console.log(error)})
+        }            
+    })
+        console.log('form values', formik.values)
+
 let profileInfo;
 let goalInfo;
         if (!props.currentProfile.age) {
             profileInfo = (
-                <form id='new-profile-form-container' onSubmit={handleSubmit} >
+                <form id='new-profile-form-container' onSubmit={formik.handleSubmit} >
                     <div>
                         <label htmlFor='name'>Name</label>
-                        <input onChange={handleChange} type='text' name='name' id='name' value={newProfile.name} />
+                        <input onChange={formik.handleChange} type='text' name='name' id='name' value={formik.values.name} />
                     </div>
                     <div>
-                        <label htmlFor='skills'>Age</label>
-                        <input onChange={handleChange} type='text' name='age' id='age' value={newProfile.skills} />
+                        <label htmlFor='age'>Age</label>
+                        <input onChange={formik.handleChange} type='text' name='age' id='age' value={formik.values.age} />
                     </div>
                     <div>
-                        <label htmlFor='zipCode'>Weight</label>
-                        <input onChange={handleChange} type='text' name='weight' id='weight' value={newProfile.zipCode} />
+                        <label htmlFor='weight'>Weight</label>
+                        <input onChange={formik.handleChange} type='text' name='weight' id='weight' value={formik.values.weight} />
                     </div>
                     <input className='brand-button' type='submit' value='submit' />
-                    <select>
+                    <select name='activityLevel' value={formik.values.activityLevel} onChange={formik.handleChange}>
                         <option>--Choose Actity Level--</option>
                         <option value={1.2}>Sedentary</option>
                         <option value={1.375}>Lightly Active</option>
@@ -67,12 +75,12 @@ let goalInfo;
                         <option value={1.725}>Very Active</option>
                         <option value={1.9}>Extra Active</option>
                     </select>
-                    <select>
+                    {/* <select>
                         <option>--What's your goal--</option>
                         <option value={1.2}>Sedentary</option>
                         <option value={1.375}>Lightly Active</option>
                         <option value={1.55}>Moderately Active</option>
-                    </select>
+                    </select> */}
                 </form>
             )
         } else{
