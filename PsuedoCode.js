@@ -9,8 +9,6 @@ thats basically it
 
 
 
-
-
 function to get caloric goal
 BMR = 88.362 + (13.397 x weight in kg) + (4.799 x height in cm) – (5.677 x age in years)
 first convert weight into kg 
