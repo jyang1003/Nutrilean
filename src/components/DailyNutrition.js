@@ -15,13 +15,57 @@ function DailyNutrition(props) {
     let proArray = []
     let carbArray = []
     let fatArray = []
-    
-    const testFunction = (e) => {
-        console.log('this is formik date', formik.values.date)
-        console.log('this is date,', date)
-    }
-	useEffect(() => {
-		props.getProfile()
+
+    // const testFunction = (e) => {
+    //     console.log('this is formik date', formik.values.date)
+    //     console.log('this is date,', date)
+    //     setTotalCal(formik.values.calories)
+    // }
+	
+    const formik = useFormik({
+        initialValues: {
+            calories: 0,
+            protein: 0,
+            carbs: 0,
+            fats: 0,
+            date:''
+        },
+        onSubmit: () => {
+
+            let nutritionInput = {
+                calories: formik.values.calories,
+                protein: formik.values.protein,
+                carbs: formik.values.carbs,
+                fats: formik.values.fats,
+                date: formik.values.date
+            }
+            console.log('this is the info', nutritionInput)
+            fetch(`http://localhost:8000/intake/${props.profile._id}`, {
+                method: 'POST',
+                body: JSON.stringify(nutritionInput),
+                headers: { 'Content-Type': 'application/JSON'}
+            })
+            .then((response) => {
+                props.loadProfile()
+                const allNutrition = props.profile.nutrition
+                console.log('all nutrition', allNutrition)
+                let thisDayNutrition = allNutrition.filter(object => object.date == date)
+                thisDayNutrition.forEach(object => {
+                    calArray.push(object.calories)
+                    proArray.push(object.protein)
+                    carbArray.push(object.carbs)
+                    fatArray.push(object.fats)
+                })
+                setTotalCal(calArray.reduce((a, b) => a + b, 0))
+                setTotalPro(proArray.reduce((a, b) => a + b, 0))
+                setTotalCarb(carbArray.reduce((a, b) => a + b, 0))
+                setTotalFat(fatArray.reduce((a, b) => a + b, 0))
+            })
+            .catch(error => {console.log(error)})
+        }            
+    })
+    useEffect(() => {
+		props.loadProfile()
         const allNutrition = props.profile.nutrition
         // console.log('this is today', today.getDate)
         console.log('all nutrition', allNutrition)
@@ -38,52 +82,7 @@ function DailyNutrition(props) {
         setTotalPro(proArray.reduce((a, b) => a + b, 0))
         setTotalCarb(carbArray.reduce((a, b) => a + b, 0))
         setTotalFat(fatArray.reduce((a, b) => a + b, 0))
-	}, [])
-    const formik = useFormik({
-        initialValues: {
-            calories: 0,
-            protein: 0,
-            carbs: 0,
-            fats: 0,
-            date:''
-        },
-        onSubmit: () => {
-            let nutritionInput = {
-                calories: formik.values.calories,
-                protein: formik.values.protein,
-                carbs: formik.values.carbs,
-                fats: formik.values.fats,
-                date: formik.values.date
-            }
-            console.log('this is the info', nutritionInput)
-            fetch(`http://localhost:8000/intake/${props.profile._id}`, {
-                method: 'POST',
-                body: JSON.stringify(nutritionInput),
-                headers: { 'Content-Type': 'application/JSON'}
-            })
-            .then((response) => {
-                props.getProfile()
-                                
-                const allNutrition = props.profile.nutrition
-                // console.log('this is today', today.getDate)
-                console.log('all nutrition', allNutrition)
-                // console.log('this is date', date)
-                let thisDayNutrition = allNutrition.filter(object => object.date == date)
-                // console.log('this is todays nutrition', thisDayNutrition)
-                thisDayNutrition.forEach(object => {
-                    calArray.push(object.calories)
-                    proArray.push(object.protein)
-                    carbArray.push(object.carbs)
-                    fatArray.push(object.fats)
-                })
-                setTotalCal(calArray.reduce((a, b) => a + b, 0))
-                setTotalPro(proArray.reduce((a, b) => a + b, 0))
-                setTotalCarb(carbArray.reduce((a, b) => a + b, 0))
-                setTotalFat(fatArray.reduce((a, b) => a + b, 0))
-            })
-            .catch(error => {console.log(error)})
-        }            
-    })
+	}, [totalCal, totalFat, totalCarb, totalPro, formik])
     let dailyIntakeForm = (
         <form id='myDay' onSubmit={formik.handleSubmit}>
             <div>
@@ -108,12 +107,6 @@ function DailyNutrition(props) {
             </div>
             <input type='submit'></input>
         </form>
-        )
-        // through props.profile, display the information related to nutrition
-        let dailyIntakeCard = (
-            <div>
-
-            </div>
         )
 
     return (

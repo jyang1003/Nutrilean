@@ -22,7 +22,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [currentProfile, setCurrentProfile] = useState({})
   const [msgAlerts, setMsgAlerts] = useState([])
-
+  let x = 1
   console.log('user in app', user)
   console.log('message alerts', msgAlerts)
   const clearUser = () => {
@@ -48,28 +48,27 @@ const App = () => {
 	//==================//
 	// GET USER PROFILE //
 	//==================//
-	const getProfile = () => {
+	const loadProfile = () => {
 		if (user != null) {
 			console.log('user id: ',user._id)
 			//fetch req to get profile
 			fetch(`http://localhost:8000/profile/${user._id}`)
 			.then(profile => {
-				console.log('first .then: ',profile)
+				// console.log('first .then: ',profile)
 				return profile.json()
 			})
 			.then(profile => {
 				console.log('second .then: ', profile)
 				setCurrentProfile(profile)
-				return ('Logged in!')
 			})
 			.catch(error => console.log(error))
-		}
+		} 
 	}
 	//=================//
 	// HOOK UPON LOGIN //
 	//=================//
 	useEffect(() => {
-		getProfile()
+		loadProfile()
 		console.log('this is current profile:', currentProfile)
 		// console.log('this is current user:', user)
 	}, [user])
@@ -89,7 +88,7 @@ const App = () => {
 					/>
 					<Route
 						path='/profile'
-						element={<Profile currentProfile={currentProfile} getProfile={getProfile}user={user}msgAlert={msgAlert} setUser={setUser}/>}
+						element={<Profile currentProfile={currentProfile} loadProfile={loadProfile}user={user}msgAlert={msgAlert} setUser={setUser}/>}
 					/>
 					<Route
 						path='/my-week'
@@ -97,7 +96,7 @@ const App = () => {
 					/>
 					<Route
 						path='/my-day'
-						element={<DailyNutrition msgAlert={msgAlert} user={user} profile={currentProfile} getProfile={getProfile}/>}
+						element={<DailyNutrition msgAlert={msgAlert} user={user} profile={currentProfile} loadProfile={loadProfile}/>}
 					/>
 
           <Route
