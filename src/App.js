@@ -117,11 +117,11 @@ const App = () => {
 				/>
 				<Route
 					path='/my-week'
-					element={<MyWeek msgAlert={msgAlert} setUser={setUser} />}
+					element={<MyWeek msgAlert={msgAlert} setUser={setUser} profile={currentProfile} dailyIntake={dailyIntake} cal={totalCal} pro={totalPro} carb={totalCarb} fat={totalFat} date={date}/>}
 				/>
 				<Route
 					path='/my-day'
-					element={<DailyNutrition msgAlert={msgAlert} user={user} profile={currentProfile} loadProfile={loadProfile} dailyIntake={dailyIntake}cal={totalCal} pro={totalPro} carb={totalCarb} fat={totalFat} date={date}/>}
+					element={<DailyNutrition msgAlert={msgAlert} user={user} profile={currentProfile} loadProfile={loadProfile} dailyIntake={dailyIntake} cal={totalCal} pro={totalPro} carb={totalCarb} fat={totalFat} date={date}/>}
 				/>
 
 				<Route

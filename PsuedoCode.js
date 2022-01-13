@@ -1,16 +1,15 @@
 /*
 TODO LIST
-1. create all functions for the nutrition math
-    caloric goals
-    protein goals
-    carbs goals
-    fats goals
+1. learn/add graph stuff
+2. add edit function based on graph click 
+3. stretch goal allow them to view graph by different week
 
-2. make function to add up nutrition by date
-3. do the goals - daily intake function
-4. learn/add graph stuff
-5. add edit function based on graph click 
-6. stretch goal allow them to view graph by different week
+things i still need to do nutrition till goal
+thats basically it
+
+
+
+
 
 function to get caloric goal
 BMR = 88.362 + (13.397 x weight in kg) + (4.799 x height in cm) – (5.677 x age in years)
@@ -52,26 +51,14 @@ fats 25%
 carbs 50%
 
 
-                    calGoal = Math.round(bmr + 400)
-                    proGoal = formik.values.weight * 1.3
-                    fatGoal = (.20 * bmr)/9
-                    carbGoal = (calGoal - (proGoal * 4) + (fatGoal * 9))/4
-                    if (profile.sex === 'male'){
-                        if(goal ===1){
-                            calGoalVar = 
-                        }
-                    }
-calGoalVar
-proGoalVar
-fatGoalVar
-carbGoalVar
+
             if(formik.values.sex === 'male'){
             bmr = formik.values.activityLevel * (88.362 + (13.397 * props.currentProfile.weight * .4535) + (4.799 * props.currentProfile.height * 2.57) 
             - (5.677 * props.profile.age)) 
                 if (formik.values.goal === 1){
                     calGoal = Math.round(bmr - 400)
-                    proGoal = formik.values.weight * 1.2
-                    fatGoal = (.2 * bmr)/9
+                    proGoal = formik.values.weight * 1.3
+                    fatGoal = (.20 * bmr)/9
                     carbGoal = (calGoal - (proGoal * 4) + (fatGoal * 9))/4
                 }
                 else if (formik.values.goal === 2){
@@ -110,4 +97,42 @@ carbGoalVar
                     carbGoal = (calGoal - (proGoal * 4) + (fatGoal * 9))/4
                 }
             }
+
+    fetch localhost8000/profile to get the profile
+    return profile
+    .then((profile) => {
+                        bmr = profile.activityLevel * (447.6 + (9.25 * profile.weight * .4535) + (3.10 * props.profile.height * 2.57)
+                - (4.33 * props.profile.age))
+    })
+
+    const [totalCal, setTotalCal] = useState()
+    const [totalPro, setTotalPro] = useState()
+    const [totalCarb, setTotalCarb] = useState()
+    const [totalFat, setTotalFat] = useState()
+
+    let today = new Date(),
+    month = ("0" + (today.getMonth() + 1)).slice(-2),
+    date = `${today.getFullYear()}-${month}-${today.getDate()}`
+
+    let calArray = []
+    let proArray = []
+    let carbArray = []
+    let fatArray = []
+        const calcDailyIntake = () => {
+            const allNutrition = props.profile.nutrition
+            console.log('all nutrition', allNutrition)
+            let thisDayNutrition = allNutrition.filter(object => object.date == date)
+            thisDayNutrition.forEach(object => {
+                calArray.push(object.calories)
+                proArray.push(object.protein)
+                carbArray.push(object.carbs)
+                fatArray.push(object.fats)
+            })
+            setTotalCal(calArray.reduce((a, b) => a + b, 0))
+            setTotalPro(proArray.reduce((a, b) => a + b, 0))
+            setTotalCarb(carbArray.reduce((a, b) => a + b, 0))
+            setTotalFat(fatArray.reduce((a, b) => a + b, 0))
+        }
+
+
 */
