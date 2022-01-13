@@ -135,4 +135,26 @@ carbs 50%
         }
 
 
+        get total for all the days
+        push them into an array
+        whole thing array index 0 - 6
+
+        moment().inBetween()
+        moment().isAfter()
+
+        look into doomsday 
+
+        see how many days between anchor date and day trying to identify then use modulus
+
+        
+
+        destringify
+        get current date, check with date
+        get DAY (mon tues etc)
+
+        switch statement based on DAY 
+        ex. if tues, gen tues + last 2 days
+        if wed gen wed + last 3 days
+
+        last day would be 1st + 6
 */

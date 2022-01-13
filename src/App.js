@@ -68,7 +68,6 @@ const App = () => {
             setTotalPro(proArray.reduce((a, b) => a + b, 0))
             setTotalCarb(carbArray.reduce((a, b) => a + b, 0))
             setTotalFat(fatArray.reduce((a, b) => a + b, 0))
-
 	}
 	//==================//
 	// GET USER PROFILE //
@@ -117,7 +116,7 @@ const App = () => {
 				/>
 				<Route
 					path='/my-week'
-					element={<MyWeek msgAlert={msgAlert} setUser={setUser} profile={currentProfile} dailyIntake={dailyIntake} cal={totalCal} pro={totalPro} carb={totalCarb} fat={totalFat} date={date}/>}
+					element={<MyWeek msgAlert={msgAlert} date={date} setUser={setUser} profile={currentProfile} dailyIntake={dailyIntake} cal={totalCal} pro={totalPro} carb={totalCarb} fat={totalFat} date={date}/>}
 				/>
 				<Route
 					path='/my-day'

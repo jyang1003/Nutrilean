@@ -41,7 +41,7 @@ function DailyNutrition(props) {
     useEffect(() => {
 		props.loadProfile()
         props.dailyIntake()
-	}, [props, formik])
+	}, [formik])
 
     let dailyIntakeForm = (
         <form id='myDay' onSubmit={formik.handleSubmit}>
