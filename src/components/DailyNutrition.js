@@ -2,20 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 
 function DailyNutrition(props) {   
-    const [totalCal, setTotalCal] = useState()
-    const [totalPro, setTotalPro] = useState()
-    const [totalCarb, setTotalCarb] = useState()
-    const [totalFat, setTotalFat] = useState()
-
-    let today = new Date(),
-    month = ("0" + (today.getMonth() + 1)).slice(-2),
-    date = `${today.getFullYear()}-${month}-${today.getDate()}`
-
-    let calArray = []
-    let proArray = []
-    let carbArray = []
-    let fatArray = []
-
     // const testFunction = (e) => {
     //     console.log('this is formik date', formik.values.date)
     //     console.log('this is date,', date)
@@ -45,44 +31,18 @@ function DailyNutrition(props) {
                 body: JSON.stringify(nutritionInput),
                 headers: { 'Content-Type': 'application/JSON'}
             })
-            .then((response) => {
+            .then(() => {
                 props.loadProfile()
-                const allNutrition = props.profile.nutrition
-                console.log('all nutrition', allNutrition)
-                let thisDayNutrition = allNutrition.filter(object => object.date == date)
-                thisDayNutrition.forEach(object => {
-                    calArray.push(object.calories)
-                    proArray.push(object.protein)
-                    carbArray.push(object.carbs)
-                    fatArray.push(object.fats)
-                })
-                setTotalCal(calArray.reduce((a, b) => a + b, 0))
-                setTotalPro(proArray.reduce((a, b) => a + b, 0))
-                setTotalCarb(carbArray.reduce((a, b) => a + b, 0))
-                setTotalFat(fatArray.reduce((a, b) => a + b, 0))
+                props.dailyIntake()
             })
             .catch(error => {console.log(error)})
         }            
     })
     useEffect(() => {
 		props.loadProfile()
-        const allNutrition = props.profile.nutrition
-        // console.log('this is today', today.getDate)
-        console.log('all nutrition', allNutrition)
-        // console.log('this is date', date)
-        let thisDayNutrition = allNutrition.filter(object => object.date == date)
-        console.log('this is todays nutrition', thisDayNutrition)
-        thisDayNutrition.forEach(object => {
-            calArray.push(object.calories)
-            proArray.push(object.protein)
-            carbArray.push(object.carbs)
-            fatArray.push(object.fats)
-        })
-        setTotalCal(calArray.reduce((a, b) => a + b, 0))
-        setTotalPro(proArray.reduce((a, b) => a + b, 0))
-        setTotalCarb(carbArray.reduce((a, b) => a + b, 0))
-        setTotalFat(fatArray.reduce((a, b) => a + b, 0))
-	}, [totalCal, totalFat, totalCarb, totalPro, formik])
+        props.dailyIntake()
+	}, [props, formik])
+
     let dailyIntakeForm = (
         <form id='myDay' onSubmit={formik.handleSubmit}>
             <div>
@@ -112,16 +72,15 @@ function DailyNutrition(props) {
     return (
     <div>
         <div>
-            <h1>Today is {date}</h1>
+            <h1>Today is {props.date}</h1>
             {dailyIntakeForm}
-            {/* <button onClick={testFunction}>test</button> */}
         </div>
         <div>
             <h2>Here is your intake for the day:</h2>
-            <p>Total Calories: {totalCal}</p>
-            <p>Total Protein: {totalPro}</p>
-            <p>Total Carbs: {totalCarb}</p>
-            <p>Total Fats: {totalFat}</p>
+            <p>Total Calories: {props.cal}</p>
+            <p>Total Protein: {props.pro}</p>
+            <p>Total Carbs: {props.carb}</p>
+            <p>Total Fats: {props.fat}</p>
         </div>
     </div>
     )

@@ -29,46 +29,53 @@ function Profile(props) {
         onSubmit: () => {
             let profileInput;
             if (formik.values.sex === 'male') {
-                bmr = formik.values.activityLevel * (88.362 + (13.397 * formik.values.weight * .4535) + (4.799 * formik.values.height * 2.57)
-                    - (5.677 * formik.values.age))
-                if (formik.values.goal === 1) {
+                bmr = formik.values.activityLevel * (88.362 + (13.397 * formik.values.weight * .4535) + (4.799 * formik.values.height * 2.57) - (5.677 * formik.values.age))
+                if (formik.values.goal == 1) {
                     calGoal = Math.round(bmr - 400)
                     proGoal = formik.values.weight * 1.3
                     fatGoal = (.20 * bmr) / 9
                     carbGoal = (calGoal - (proGoal * 4) - (fatGoal * 9)) / 4
+                    console.log('male lose weight')
                 }
-                else if (formik.values.goal === 2) {
+                else if (formik.values.goal == 2) {
                     calGoal = Math.round(bmr)
                     proGoal = formik.values.weight * 1.1
                     fatGoal = (.25 * bmr) / 9
                     carbGoal = (calGoal - (proGoal * 4) - (fatGoal * 9)) / 4
+                    console.log('male maintain')
                 }
                 else {
                     calGoal = Math.round(bmr + 500)
                     proGoal = formik.values.weight * .9
                     fatGoal = (.25 * Math.round(bmr)) / 9
                     carbGoal = (calGoal - (proGoal * 4) - (fatGoal * 9)) / 4
+                    console.log('male gain')
                 }
             } else {
-                bmr = formik.values.activityLevel * (447.6 + (9.25 * formik.values.weight * .4535) + (3.10 * formik.values.height * 2.57)
-                    - (4.33 * formik.values.age))
-                if (formik.values.goal === 1) {
+                bmr = formik.values.activityLevel * (447.6 + (9.25 * formik.values.weight * .4535) + (3.10 * formik.values.height * 2.57) - (4.33 * formik.values.age))
+                if (formik.values.goal == 1) {
                     calGoal = Math.round(bmr - 400)
                     proGoal = formik.values.weight * 1.3
                     fatGoal = (.20 * Math.round(bmr)) / 9
                     carbGoal = (calGoal - (proGoal * 4) - (fatGoal * 9)) / 4
+                    console.log('female lose')
+
                 }
-                else if (formik.values.goal === 2) {
+                else if (formik.values.goal == 2) {
                     calGoal = Math.round(bmr)
                     proGoal = formik.values.weight * 1.1
                     fatGoal = (.25 * Math.round(bmr)) / 9
                     carbGoal = (calGoal - (proGoal * 4) - (fatGoal * 9)) / 4
+                    console.log('female maintain')
+
                 }
                 else {
                     calGoal = Math.round(bmr + 500)
                     proGoal = formik.values.weight * .9
                     fatGoal = (.25 * Math.round(bmr)) / 9
                     carbGoal = (calGoal - (proGoal * 4) - (fatGoal * 9)) / 4
+                    console.log('female gain')
+
                 }
             }
             profileInput = {
@@ -101,7 +108,7 @@ function Profile(props) {
 
     let profileInfo;
     let goalInfo;
-
+    let tillGoal;
     if (!props.currentProfile.age) {
         profileInfo = (
             <form id='new-profile-form-container' onSubmit={formik.handleSubmit} >
@@ -145,6 +152,12 @@ function Profile(props) {
             </form>
         )
     } else {
+        props.dailyIntake()
+        let tillCal = props.currentProfile.caloricGoal - props.cal
+        let tillPro = props.currentProfile.proteinGoal - props.pro
+        let tillCarb = props.currentProfile.carbsGoal - props.carb
+        let tillFat = props.currentProfile.fatsGoal - props.fat
+
         profileInfo = (
             <div>
                 <ul>
@@ -166,6 +179,14 @@ function Profile(props) {
                 </ul>
             </div>
         )
+        tillGoal = (
+            <div>
+                <h3>Calories till goal: {tillCal}</h3>
+                <h3>Protein till goal: {tillPro}</h3>
+                <h3>Carbs till goal: {tillCarb}</h3>
+                <h3>Fats till goal: {tillFat}</h3>
+            </div>
+        )
     }
     // display nutrition goals
     // function for math stuff
@@ -174,6 +195,7 @@ function Profile(props) {
             <p>this works</p>
             {profileInfo}
             {goalInfo}
+            {tillGoal}
         </div>
     )
 }

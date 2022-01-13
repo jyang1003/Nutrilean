@@ -19,20 +19,30 @@ import MyWeek from './components/MyWeek'
 
 const App = () => {
 
-  const [user, setUser] = useState(null)
-  const [currentProfile, setCurrentProfile] = useState({})
-  const [msgAlerts, setMsgAlerts] = useState([])
-  let x = 1
-  console.log('user in app', user)
-  console.log('message alerts', msgAlerts)
-  const clearUser = () => {
-    console.log('clear user ran')
-    setUser(null)
-  }
+	const [user, setUser] = useState(null)
+	const [currentProfile, setCurrentProfile] = useState({})
+	const [msgAlerts, setMsgAlerts] = useState([])
+	const [totalCal, setTotalCal] = useState()
+    const [totalPro, setTotalPro] = useState()
+    const [totalCarb, setTotalCarb] = useState()
+    const [totalFat, setTotalFat] = useState()
+	
+	let today = new Date(),
+    month = ("0" + (today.getMonth() + 1)).slice(-2),
+    date = `${today.getFullYear()}-${month}-${today.getDate()}`
+
+    let calArray = []
+    let proArray = []
+    let carbArray = []
+    let fatArray = []
+	const clearUser = () => {
+		console.log('clear user ran')
+		setUser(null)
+	}
 
 	const deleteAlert = (id) => {
 		setMsgAlerts((prevState) => {
-			return (prevState.filter((msg) => msg.id !== id) )
+			return (prevState.filter((msg) => msg.id !== id))
 		})
 	}
 
@@ -41,28 +51,43 @@ const App = () => {
 		setMsgAlerts(() => {
 			return (
 				[{ heading, message, variant, id }]
-      )
+			)
 		})
 	}
+	const dailyIntake = () => {
+            const allNutrition = currentProfile.nutrition
+            console.log('all nutrition', allNutrition)
+            let thisDayNutrition = allNutrition.filter(object => object.date == date)
+            thisDayNutrition.forEach(object => {
+                calArray.push(object.calories)
+                proArray.push(object.protein)
+                carbArray.push(object.carbs)
+                fatArray.push(object.fats)
+            })
+            setTotalCal(calArray.reduce((a, b) => a + b, 0))
+            setTotalPro(proArray.reduce((a, b) => a + b, 0))
+            setTotalCarb(carbArray.reduce((a, b) => a + b, 0))
+            setTotalFat(fatArray.reduce((a, b) => a + b, 0))
 
+	}
 	//==================//
 	// GET USER PROFILE //
 	//==================//
 	const loadProfile = () => {
 		if (user != null) {
-			console.log('user id: ',user._id)
+			console.log('user id: ', user._id)
 			//fetch req to get profile
 			fetch(`http://localhost:8000/profile/${user._id}`)
-			.then(profile => {
-				// console.log('first .then: ',profile)
-				return profile.json()
-			})
-			.then(profile => {
-				console.log('second .then: ', profile)
-				setCurrentProfile(profile)
-			})
-			.catch(error => console.log(error))
-		} 
+				.then(profile => {
+					// console.log('first .then: ',profile)
+					return profile.json()
+				})
+				.then(profile => {
+					console.log('second .then: ', profile)
+					setCurrentProfile(profile)
+				})
+				.catch(error => console.log(error))
+		}
 	}
 	//=================//
 	// HOOK UPON LOGIN //
@@ -73,60 +98,60 @@ const App = () => {
 		// console.log('this is current user:', user)
 	}, [user])
 
-		return (
-			<Fragment>
-				<Header user={user} />
-				<Routes>
-					<Route path='/' element={<Home msgAlert={msgAlert} user={user} />} />
-					<Route
-						path='/sign-up'
-						element={<SignUp msgAlert={msgAlert} setUser={setUser} />}
-					/>
-					<Route
-						path='/sign-in'
-						element={<SignIn msgAlert={msgAlert} setUser={setUser} />}
-					/>
-					<Route
-						path='/profile'
-						element={<Profile currentProfile={currentProfile} loadProfile={loadProfile}user={user}msgAlert={msgAlert} setUser={setUser}/>}
-					/>
-					<Route
-						path='/my-week'
-						element={<MyWeek msgAlert={msgAlert} setUser={setUser} />}
-					/>
-					<Route
-						path='/my-day'
-						element={<DailyNutrition msgAlert={msgAlert} user={user} profile={currentProfile} loadProfile={loadProfile}/>}
-					/>
+	return (
+		<Fragment>
+			<Header user={user} />
+			<Routes>
+				<Route path='/' element={<Home msgAlert={msgAlert} user={user} />} />
+				<Route
+					path='/sign-up'
+					element={<SignUp msgAlert={msgAlert} setUser={setUser} />}
+				/>
+				<Route
+					path='/sign-in'
+					element={<SignIn msgAlert={msgAlert} setUser={setUser} />}
+				/>
+				<Route
+					path='/profile'
+					element={<Profile currentProfile={currentProfile} loadProfile={loadProfile} dailyIntake={dailyIntake} cal={totalCal} pro={totalPro} carb={totalCarb} fat={totalFat} user={user} msgAlert={msgAlert} setUser={setUser} />}
+				/>
+				<Route
+					path='/my-week'
+					element={<MyWeek msgAlert={msgAlert} setUser={setUser} />}
+				/>
+				<Route
+					path='/my-day'
+					element={<DailyNutrition msgAlert={msgAlert} user={user} profile={currentProfile} loadProfile={loadProfile} dailyIntake={dailyIntake}cal={totalCal} pro={totalPro} carb={totalCarb} fat={totalFat} date={date}/>}
+				/>
 
-          <Route
-            path='/sign-out'
-            element={
-              <RequireAuth user={user}>
-                <SignOut msgAlert={msgAlert} clearUser={clearUser} user={user} />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path='/change-password'
-            element={
-              <RequireAuth user={user}>
-                <ChangePassword msgAlert={msgAlert} user={user} />
-              </RequireAuth>}
-          />
-				</Routes>
-				{msgAlerts.map((msgAlert) => (
-					<AutoDismissAlert
-						key={msgAlert.id}
-						heading={msgAlert.heading}
-						variant={msgAlert.variant}
-						message={msgAlert.message}
-						id={msgAlert.id}
-						deleteAlert={deleteAlert}
-					/>
-				))}
-			</Fragment>
-		)
+				<Route
+					path='/sign-out'
+					element={
+						<RequireAuth user={user}>
+							<SignOut msgAlert={msgAlert} clearUser={clearUser} user={user} />
+						</RequireAuth>
+					}
+				/>
+				<Route
+					path='/change-password'
+					element={
+						<RequireAuth user={user}>
+							<ChangePassword msgAlert={msgAlert} user={user} />
+						</RequireAuth>}
+				/>
+			</Routes>
+			{msgAlerts.map((msgAlert) => (
+				<AutoDismissAlert
+					key={msgAlert.id}
+					heading={msgAlert.heading}
+					variant={msgAlert.variant}
+					message={msgAlert.message}
+					id={msgAlert.id}
+					deleteAlert={deleteAlert}
+				/>
+			))}
+		</Fragment>
+	)
 }
 
 export default App
