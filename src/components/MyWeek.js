@@ -7,13 +7,10 @@ import { height } from 'dom-helpers';
 
 
 function MyWeek(props) {
-
+    const [whichDisplay, setWhichDisplay] = useState()
     const svgRef = useRef()
     let days = ['Sun','Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat']
-    let weeklyCal = []
-    let weeklyCarb = []
-    let weeklyPro = []
-    let weeklyFat = []
+    let weeklyIntake = []
     let totalForSunday = []
     let totalForMonday = []
     let totalForTuesday = []
@@ -21,11 +18,21 @@ function MyWeek(props) {
     let totalForThursday = []
     let totalForFriday = []
     let totalForSaturday = []
-
+    let whichNutrient
 
     let m = moment()
     const thisWeek = () => {
         props.profile.nutrition.forEach(object => {
+            //check which variable to use
+            // if(whichDisplay === 'calories'){
+            //     whichNutrient = object.calories
+            // } else if (whichDisplay === 'carbs'){
+            //     whichNutrient = object.carbs
+            // } else if (whichDisplay === 'protein') {
+            //     whichNutrient = object.protein
+            // } else if (whichDisplay === 'fats'){
+            //     whichNutrient === object.fats
+            // }
             //checks if its same week
             if (moment(object.date).isSame(moment(props.date), 'week')) {
                 //check day of week and push results into respective arrays
@@ -61,14 +68,14 @@ function MyWeek(props) {
                 }
             }
         })
-        weeklyCal.push(totalForSunday[0])
-        weeklyCal.push(totalForMonday[0])
-        weeklyCal.push(totalForTuesday[0])
-        weeklyCal.push(totalForWednesday[0])
-        weeklyCal.push(totalForThursday[0])
-        weeklyCal.push(totalForFriday[0])
-        weeklyCal.push(totalForSaturday[0])
-        console.log('this is weeklyCal', weeklyCal)
+        weeklyIntake.push(totalForSunday[0])
+        weeklyIntake.push(totalForMonday[0])
+        weeklyIntake.push(totalForTuesday[0])
+        weeklyIntake.push(totalForWednesday[0])
+        weeklyIntake.push(totalForThursday[0])
+        weeklyIntake.push(totalForFriday[0])
+        weeklyIntake.push(totalForSaturday[0])
+        console.log('this is weeklyIntake', weeklyIntake)
     }
 
     // function to input that data into an array
@@ -104,7 +111,7 @@ function MyWeek(props) {
             .style('overflow', 'visible')
             .style('margin-top', '75px')
             .style('margin-left', '200px')
-            .style('margin-bottom', '200px')
+            .style('margin-bottom', '75px')
             .style('height', '700px')
 
         //set scaling
@@ -128,12 +135,16 @@ function MyWeek(props) {
 
         //setup svg data
         svg.selectAll('.bar')
-            .data(weeklyCal)
+            .data(weeklyIntake)
             .join(`rect`)
             .attr('x', (num, i) => xScale(i))
             .attr('y', yScale)
             .attr('width', xScale.bandwidth())
             .attr('height', val => h - yScale(val))
+    }
+    const handleClick = (e) => {
+        // setWhichDisplay = e.target.value
+        console.log(e.target.value)
     }
     useEffect(() => {
         // props.dailyIntake()
@@ -144,6 +155,16 @@ function MyWeek(props) {
 
     return (
         <div>
+            <div>
+                <label htmlFor='calories'>Calories</label>
+                <button onClick={handleClick} type='radio' name='calories' value='calories'></button>
+                <label htmlFor='protein'>Protein</label>
+                <button onClick={handleClick} type='radio' name='protein' value='protein'></button>
+                <label htmlFor='carbs'>Carbs</label>
+                <button onClick={handleClick} type='radio' name='carbs' value='carbs'></button>
+                <label htmlFor='fats'>Fats</label>
+                <button onClick={handleClick} type='radio' name='fats' value='fats'></button>
+            </div>
             <svg ref={svgRef}>
             </svg>
         </div>
