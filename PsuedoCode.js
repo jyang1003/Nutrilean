@@ -132,7 +132,16 @@ carbs 50%
             setTotalFat(fatArray.reduce((a, b) => a + b, 0))
         }
 
+            .attr('x', function(d) {return xScale(d.day)})
 
+
+                        for(let i=1; i <= days.length; i++){
+                // if (weeklyIntake[i] === undefined){
+                //     weeklyIntake[i] = {value: 0,
+                //     day: moment().isoWeekday(i)}
+                // }
+                console.log('moment iso weekday', moment().isoWeekday(i))
+            }
         get total for all the days
         push them into an array
         whole thing array index 0 - 6
