@@ -164,4 +164,60 @@ carbs 50%
         if wed gen wed + last 3 days
 
         last day would be 1st + 6
+
+
+        render graph when component mounts
+
+        update graph when component will update (whichNutrient)
+
+
+
+pops now contains the 'update selection' (=existing elements)
+  var pops= svg.selectAll(".bar")
+      .data(data);
+ 'enter().append' creates elements but also add them automatically to the 'update selection'
+  pops.enter().append("rect");
+
+ Here attributes will apply on the 'enter + update selection' (=all elements)
+  pops.attr("width", x)
+      .attr("fill", function(d) {
+        if (d.popularity> 30) {
+           return "#010";
+        else  
+           return "000"; 
+       })
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.month); })
+      .attr("width", x.rangeBand())
+      .attr("y", height - 1)
+      .attr("height", 1);
+
+
+
+      var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10)
+    .tickFormat(d3.format("s"));
+
+var gXAxis = svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+var gYAxis =  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+
+
 */

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 
-function DailyNutrition(props) {   
+const DailyNutrition = (props) => {   
     // const testFunction = (e) => {
     //     console.log('this is formik date', formik.values.date)
     //     console.log('this is date,', date)

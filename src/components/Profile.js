@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik'
 
-function Profile(props) {
+const Profile = (props) => {
 
     let bmr;
     let calGoal;
     let carbGoal;
     let proGoal;
     let fatGoal;
-
+    const [editProfile, setEditProfile] = useState(false)
 
     const formik = useFormik({
         initialValues: {
@@ -32,7 +32,7 @@ function Profile(props) {
                 bmr = formik.values.activityLevel * (88.362 + (13.397 * formik.values.weight * .4535) + (4.799 * formik.values.height * 2.57) - (5.677 * formik.values.age))
                 if (formik.values.goal == 1) {
                     calGoal = Math.round(bmr - 400)
-                    proGoal = formik.values.weight * 1.3
+                    proGoal = formik.values.weight * .8
                     fatGoal = (.20 * bmr) / 9
                     carbGoal = (calGoal - (proGoal * 4) - (fatGoal * 9)) / 4
                     console.log('male lose weight')
@@ -46,7 +46,7 @@ function Profile(props) {
                 }
                 else {
                     calGoal = Math.round(bmr + 500)
-                    proGoal = formik.values.weight * .9
+                    proGoal = formik.values.weight * 1.3
                     fatGoal = (.25 * Math.round(bmr)) / 9
                     carbGoal = (calGoal - (proGoal * 4) - (fatGoal * 9)) / 4
                     console.log('male gain')
@@ -55,7 +55,7 @@ function Profile(props) {
                 bmr = formik.values.activityLevel * (447.6 + (9.25 * formik.values.weight * .4535) + (3.10 * formik.values.height * 2.57) - (4.33 * formik.values.age))
                 if (formik.values.goal == 1) {
                     calGoal = Math.round(bmr - 400)
-                    proGoal = formik.values.weight * 1.3
+                    proGoal = formik.values.weight * .8
                     fatGoal = (.20 * Math.round(bmr)) / 9
                     carbGoal = (calGoal - (proGoal * 4) - (fatGoal * 9)) / 4
                     console.log('female lose')
@@ -71,7 +71,7 @@ function Profile(props) {
                 }
                 else {
                     calGoal = Math.round(bmr + 500)
-                    proGoal = formik.values.weight * .9
+                    proGoal = formik.values.weight * 1.3
                     fatGoal = (.25 * Math.round(bmr)) / 9
                     carbGoal = (calGoal - (proGoal * 4) - (fatGoal * 9)) / 4
                     console.log('female gain')
@@ -102,14 +102,17 @@ function Profile(props) {
                 props.loadProfile()
             })
                 .catch(error => { console.log(error) })
+                setEditProfile(false)
         }
     })
-
+    const handleEdit = () => {
+        setEditProfile(true)
+    }
 
     let profileInfo;
     let goalInfo;
     let tillGoal;
-    if (!props.currentProfile.age) {
+    if (!props.currentProfile.age || editProfile === true) {
         profileInfo = (
             <form id='new-profile-form-container' onSubmit={formik.handleSubmit} >
                 <div>
@@ -121,11 +124,11 @@ function Profile(props) {
                     <input onChange={formik.handleChange} type='number' name='age' id='age' value={formik.values.age} />
                 </div>
                 <div>
-                    <label htmlFor='weight'>Weight</label>
+                    <label htmlFor='weight'>Weight (lbs)</label>
                     <input onChange={formik.handleChange} type='number' name='weight' id='weight' value={formik.values.weight} />
                 </div>
                 <div>
-                    <label htmlFor='height'>Height</label>
+                    <label htmlFor='height'>Height (in)</label>
                     <input onChange={formik.handleChange} type='number' name='height' id='height' value={formik.values.height} />
                 </div>
                 <select name='sex' value={formik.values.sex} onChange={formik.handleChange}>
@@ -148,7 +151,6 @@ function Profile(props) {
                     <option value={3}>Gain weight</option>
                 </select>
                 <input className='brand-button' type='submit' value='submit' />
-
             </form>
         )
     } else {
@@ -160,23 +162,21 @@ function Profile(props) {
 
         profileInfo = (
             <div>
-                <ul>
-                    <li>Hello {props.currentProfile.name}</li>
-                    <li>Age: {props.currentProfile.age}</li>
-                    <li>Weight: {props.currentProfile.weight}</li>
-                    <li>Height: {props.currentProfile.height}</li>
-                    <li>Base Caloric Maintenence: {props.currentProfile.baseCaloricMaintenence}</li>
-                </ul>
+
+                    <h1>Hello {props.currentProfile.name}</h1>
+                    <h3>Age: {props.currentProfile.age}</h3>
+                    <h3>Weight: {props.currentProfile.weight} lbs</h3>
+                    <h3>Height: {props.currentProfile.height} in</h3>
+                    <h3>Base Caloric Maintenence: {props.currentProfile.baseCaloricMaintenence}</h3>
+
             </div>
         )
         goalInfo = (
             <div>
-                <ul>
-                    <li>Caloric Goal: {props.currentProfile.caloricGoal}</li>
-                    <li>Protein Goal: {props.currentProfile.proteinGoal}</li>
-                    <li>Carbs Goal: {props.currentProfile.carbsGoal}</li>
-                    <li>Fats Goal: {props.currentProfile.fatsGoal}</li>
-                </ul>
+                    <h3>Caloric Goal: {props.currentProfile.caloricGoal} Calories</h3>
+                    <h3>Protein Goal: {props.currentProfile.proteinGoal} Grams</h3>
+                    <h3>Carbs Goal: {props.currentProfile.carbsGoal} Grams</h3>
+                    <h3>Fats Goal: {props.currentProfile.fatsGoal} Grams</h3>
             </div>
         )
         tillGoal = (
@@ -192,8 +192,9 @@ function Profile(props) {
     // function for math stuff
     return (
         <div>
-            <p>this works</p>
+            <h1>{props.currentProfile.age ? 'Welcome back!': 'Enter your info to begin your journey'}</h1>
             {profileInfo}
+            <button onClick={handleEdit}>Edit Profile</button>
             {goalInfo}
             {tillGoal}
         </div>

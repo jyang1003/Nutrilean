@@ -99,7 +99,7 @@ const App = () => {
 
 	return (
 		<Fragment>
-			<Header user={user} />
+			<Header user={user} profile={currentProfile}/>
 			<Routes>
 				<Route path='/' element={<Home msgAlert={msgAlert} user={user} />} />
 				<Route
@@ -122,7 +122,6 @@ const App = () => {
 					path='/my-day'
 					element={<DailyNutrition msgAlert={msgAlert} user={user} profile={currentProfile} loadProfile={loadProfile} dailyIntake={dailyIntake} cal={totalCal} pro={totalPro} carb={totalCarb} fat={totalFat} date={date}/>}
 				/>
-
 				<Route
 					path='/sign-out'
 					element={
