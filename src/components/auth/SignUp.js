@@ -9,15 +9,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
 const SignUp = (props) => {
-	// constructor(props) {
-	// 	super(props)
 
-	// 	this.state = {
-	// 		email: '',
-	// 		password: '',
-	// 		passwordConfirmation: '',
-	// 	}
-	// }    
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
@@ -26,9 +18,7 @@ const SignUp = (props) => {
 
 	const onSignUp = (event) => {
 		event.preventDefault()
-
 		const { msgAlert, setUser } = props
-
         const credentials = {email, password, passwordConfirmation}
 
 		signUp(credentials)
@@ -53,7 +43,6 @@ const SignUp = (props) => {
 				})
 			})
 	}
-
 
     return (
         <div className='row'>
@@ -100,7 +89,6 @@ const SignUp = (props) => {
             </div>
         </div>
     )
-
 }
 
 export default SignUp

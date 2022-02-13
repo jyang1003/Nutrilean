@@ -10,7 +10,6 @@ const MyWeek = (props) => {
 
     const [whichDisplay, setWhichDisplay] = useState('calories')
     const [data, setData] = useState()
-    let svgRef = useRef()
     let weeklyIntake = []
     let reducedSunday = []
     let reducedMonday = []
@@ -27,16 +26,8 @@ const MyWeek = (props) => {
     let totalForFriday = []
     let totalForSaturday = []
     let whichNutrient;
-    let graph;
-
-    let m = moment()
-
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
 
     const handleNoData = () => {
-        console.log('this is handle no data one')
         let dayTracker = {
             '0': 'Sunday',
             '1': 'Monday',
@@ -56,7 +47,6 @@ const MyWeek = (props) => {
                 }
             }
         }
-        console.log('this is handle no data right before graph')
     }
     const thisWeek = () => {
         console.log('this is first thisWeek')
@@ -71,34 +61,26 @@ const MyWeek = (props) => {
         }
         console.log('this is which nutrient after button click', whichNutrient)
         props.profile.nutrition.forEach(object => {
-            //check which variable to use
-            //checks if its same week
             if (moment(object.date).isSame(moment(props.date), 'week')) {
-                //check day of week and push results into respective arrays
-                // console.log('this is same week')
                 if (moment(object.date).format('dddd') == 'Sunday') {
                     totalForSunday.push(object[whichNutrient])
                     reducedSunday = {
                         value: totalForSunday.reduce((a, b) => a + b, 0),
                         day: 'Sunday'
                     }
-                    // console.log('sun', totalForSunday)
                 } else if (moment(object.date).format('dddd') == 'Monday') {
                     totalForMonday.push(object[whichNutrient])
                     reducedMonday = {
                         value: totalForMonday.reduce((a, b) => a + b, 0),
                         day: 'Monday'
                     }
-                    // console.log('Mon', totalForMonday)
                 } else if (moment(object.date).format('dddd') == 'Tuesday') {
                     totalForTuesday.push(object[whichNutrient])
-                    // console.log('Tue', totalForTuesday)
                     reducedTuesday = {
                         value: totalForTuesday.reduce((a, b) => a + b, 0),
                         day: 'Tuesday'
                     }
                 } else if (moment(object.date).format('dddd') == 'Wednesday') {
-                    // console.log('Wed', totalForWednesday)
                     totalForWednesday.push(object[whichNutrient])
                     reducedWednesday = {
                         value: totalForWednesday.reduce((a, b) => a + b, 0),
@@ -110,21 +92,18 @@ const MyWeek = (props) => {
                         value: totalForThursday.reduce((a, b) => a + b, 0),
                         day: 'Thursday'
                     }
-                    // console.log('Thur', totalForThursday)
                 } else if (moment(object.date).format('dddd') == 'Friday') {
                     totalForFriday.push(object[whichNutrient])
                     reducedFriday = {
                         value: totalForFriday.reduce((a, b) => a + b, 0),
                         day: 'Friday'
                     }
-                    // console.log('Fri', totalForFriday)
                 } else if (moment(object.date).format('dddd') == 'Saturday') {
                     totalForSaturday.push(object[whichNutrient])
                     reducedSaturday = {
                         value: (totalForSaturday.reduce((a, b) => a + b, 0)),
                         day: 'Saturday'
                     }
-                    // console.log('Sat', totalForSaturday)
                 }
             }
         })
@@ -135,30 +114,17 @@ const MyWeek = (props) => {
         weeklyIntake.push(reducedThursday)
         weeklyIntake.push(reducedFriday)
         weeklyIntake.push(reducedSaturday)
-        console.log('this is weeklyIntake', weeklyIntake)
         handleNoData()
-        console.log('this is last thisWeek')
         setData(weeklyIntake)
     }
 
-
-    
     const handleClick = (e) => {
         setWhichDisplay(e.target.value)
         console.log(e.target.value)
     }
 
-    // const renderGraph = () => {
-    //     graph = (
-
-    //     )
-    // }
     useEffect(() => {
-        // props.dailyIntake()
-        //set up svg container
-        console.log('this is working but also not')
         thisWeek()
-        // renderGraph()
     }, [whichDisplay])
 
     return (

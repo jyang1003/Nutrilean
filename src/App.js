@@ -15,6 +15,8 @@ import ChangePassword from './components/auth/ChangePassword'
 import Profile from './components/Profile'
 import DailyNutrition from './components/DailyNutrition'
 import MyWeek from './components/MyWeek'
+import './index.css';
+
 
 
 const App = () => {

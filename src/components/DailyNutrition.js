@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 
 const DailyNutrition = (props) => {   
-    // const testFunction = (e) => {
-    //     console.log('this is formik date', formik.values.date)
-    //     console.log('this is date,', date)
-    //     setTotalCal(formik.values.calories)
-    // }
-	
+
     const formik = useFormik({
         initialValues: {
             calories: 0,
@@ -25,7 +20,6 @@ const DailyNutrition = (props) => {
                 fats: formik.values.fats,
                 date: formik.values.date
             }
-            console.log('this is the info', nutritionInput)
             fetch(`http://localhost:8000/intake/${props.profile._id}`, {
                 method: 'POST',
                 body: JSON.stringify(nutritionInput),

@@ -25,9 +25,6 @@ const ChangePassword = (props) => {
 		event.preventDefault()
 
 		const { msgAlert, user } = props
-        console.log('the user', user)
-        
-
         const passwords = {oldPassword, newPassword}
 
 		changePassword(passwords, user)
@@ -49,8 +46,6 @@ const ChangePassword = (props) => {
 				})
 			})
 	}
-
-
 
     return (
         <div className='row'>
