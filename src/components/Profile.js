@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik'
-
+import apiUrl from '../apiConfig';
 const Profile = (props) => {
 
     let bmr;
@@ -93,7 +93,7 @@ const Profile = (props) => {
                 fatsGoal: Math.round(fatGoal),
                 owner: props.user._id
             }
-            fetch(`http://localhost:8000/profiles`, {
+            fetch(`${apiUrl}/profiles`, {
                 method: 'POST',
                 body: JSON.stringify(profileInput),
                 headers: { 'Content-Type': 'application/JSON' }

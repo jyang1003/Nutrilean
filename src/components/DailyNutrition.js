@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-
+import apiUrl from '../apiConfig';
 const DailyNutrition = (props) => {   
 
     const formik = useFormik({
@@ -20,7 +20,7 @@ const DailyNutrition = (props) => {
                 fats: formik.values.fats,
                 date: formik.values.date
             }
-            fetch(`http://localhost:8000/intake/${props.profile._id}`, {
+            fetch(`${apiUrl}/${props.profile._id}`, {
                 method: 'POST',
                 body: JSON.stringify(nutritionInput),
                 headers: { 'Content-Type': 'application/JSON'}
